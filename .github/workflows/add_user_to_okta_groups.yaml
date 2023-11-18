@@ -6,7 +6,7 @@ on:
       userEmail:
         description: 'User Email'
         required: true
-      groupName:
+      groupId:
         description: 'Group ID'
         required: true
 
