@@ -1,0 +1,29 @@
+name: Add User to Okta Groups
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  add_user_to_okta_groups:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Add User to Okta Groups
+        run: node src/scripts/add_user_to_okta_groups.js
+        env:
+          OKTA_API_KEY: ${{ secrets.OKTA_API_KEY }}
+          OKTA_BASE_URL: ${{ secrets.OKTA_BASE_URL }}
+          OKTA_GROUP_ID: ${{ secrets.OKTA_GROUP_ID }}

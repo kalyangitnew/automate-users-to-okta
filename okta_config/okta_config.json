@@ -1,0 +1,8 @@
+{
+    "clientId": "your_okta_client_id",
+    "clientSecret": "your_okta_client_secret",
+    "tokenUrl": "https://your-okta-domain/oauth2/default/v1/token",
+    "apiUrl": "https://your-okta-domain/api/v1",
+    "authorizationServerId": "default"
+}
+  

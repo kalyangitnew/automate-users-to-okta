@@ -13,16 +13,16 @@ async function addUsertoOktaGroups(userId, groupId) {
     const accessToken = tokenResponse.data.access_token;
 
     await axios.post(
-      `${oktaConfig.apiUrl}/groups/${groupId}/users/${userId}`,
+      '${oktaConfig.apiUrl}/groups/${groupId}/users/${userId}',
       {},
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: 'Bearer ${accessToken}',
         },
       }
     );
 
-    console.log(`User added to Okta group successfully.`);
+    console.log('User added to Okta group successfully');
   } catch (error) {
     console.error('Error adding user to Okta group:', error.message);
   }
