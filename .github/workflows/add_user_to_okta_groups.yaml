@@ -26,4 +26,7 @@ jobs:
         run: pip install requests
 
       - name: Run script
+        env:
+          OKTA_DOMAIN: ${{ secrets.OKTA_DOMAIN }}
+          OKTA_API_TOKEN: ${{ secrets.OKTA_API_TOKEN }}
         run: python scripts/add_user_to_group.py ${{ github.event.inputs.userEmail }} ${{ github.event.inputs.groupName }}
