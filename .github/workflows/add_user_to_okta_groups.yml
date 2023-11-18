@@ -1,8 +1,14 @@
 name: Add User to Okta Group
 
 on:
-  pull_request:
-    types: [opened, reopened]
+  workflow_dispatch:
+    inputs:
+      userEmail:
+        description: 'User Email'
+        required: true
+      groupName:
+        description: 'Group Name'
+        required: true
 
 jobs:
   add-user-to-group:
@@ -20,4 +26,4 @@ jobs:
         run: pip install requests
 
       - name: Run script
-        run: python scripts/add_user_to_group.py ${{ github.event.pull_request.user.login }} ${{ github.event.pull_request.title }}
+        run: python scripts/add_user_to_group.py ${{ github.event.inputs.userEmail }} ${{ github
