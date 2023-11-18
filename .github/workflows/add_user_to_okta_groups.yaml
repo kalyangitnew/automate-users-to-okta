@@ -26,4 +26,4 @@ jobs:
         run: pip install requests
 
       - name: Run script
-        run: python scripts/add_user_to_group.py ${{ github.event.inputs.userEmail }} ${{ github
+        run: python scripts/add_user_to_group.py ${{ github.event.inputs.userEmail }} ${{ github.event.inputs.groupName }}
