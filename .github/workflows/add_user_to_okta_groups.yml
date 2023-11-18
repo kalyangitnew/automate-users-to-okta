@@ -1,32 +1,23 @@
-name: Add User to Okta Groups
+name: Add User to Okta Group
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
-  add_user_to_okta_groups:
+  add-user-to-group:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r src/requirements.txt
-        pip install os-sys
-        
+      - name: Install dependencies
+        run: pip install requests
 
-    - name: Run Python script
-      run: python src/add_user_to_okta_groups.py
-      env:
-        OKTA_API_KEY: ${{ secrets.OKTA_API_KEY }}
-        OKTA_ORG_URL: ${{ secrets.OKTA_ORG_URL }}
+      - name: Run script
+        run: python scripts/add_user_to_group.py ${{ github.event.pull_request.user.login }} ${{ github.event.pull_request.title }}

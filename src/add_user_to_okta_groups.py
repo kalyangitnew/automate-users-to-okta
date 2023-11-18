@@ -1,34 +1,32 @@
-import requests
-import json
 import os
+import sys
+import requests
 
-def add_user_to_okta_groups(user_id, group_ids):
-    okta_api_key = os.environ.get('OKTA_API_KEY')
-    okta_org_url = os.environ.get('OKTA_ORG_URL')
+def add_user_to_group(user_id, group_name):
+    # Your Okta domain and API token
+    okta_domain = os.getenv('OKTA_DOMAIN')
+    api_token = os.getenv('OKTA_API_TOKEN')
 
+    # The Okta API endpoint for adding a user to a group
+    url = f"https://{okta_domain}/api/v1/groups/{group_name}/users/{user_id}"
+
+    # The headers for the API request
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': f'SSWS {okta_api_key}',
+        'Authorization': f'SSWS {api_token}',
     }
 
-    user_url = f'{okta_org_url}/api/v1/users/{user_id}'
-    user_response = requests.get(user_url, headers=headers)
+    # Send the API request
+    response = requests.put(url, headers=headers)
 
-    if user_response.status_code == 200:
-        user_data = user_response.json()
-
-        for group_id in group_ids:
-            add_user_to_group_url = f'{okta_org_url}/api/v1/groups/{group_id}/users'
-            payload = {'id': user_data['id']}
-            requests.put(add_user_to_group_url, headers=headers, json=payload)
-
-            print(f'User {user_data["profile"]["login"]} added to group {group_id}')
+    # Check the response
+    if response.status_code == 200:
+        print(f"Successfully added user {user_id} to group {group_name}")
     else:
-        print(f'Error: Unable to fetch user details. Status code: {user_response.status_code}')
+        print(f"Failed to add user {user_id} to group {group_name}. Response: {response.text}")
 
-if __name__ == '__main__':
-    user_id = input('Enter the user ID: ')
-    group_ids = input('Enter the comma-separated group IDs: ').split(',')
-
-    add_user_to_okta_groups(user_id, group_ids)
+if __name__ == "__main__":
+    user_id = sys.argv[1]
+    group_name = sys.argv[2]
+    add_user_to_group(user_id, group_name)
